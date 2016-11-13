@@ -219,7 +219,7 @@ public class SimpleText extends SpannableString {
       ClickableSpan span = new ClickableSpan() {
         @Override
         public void onClick(View widget) {
-          onTextClickListener.onTextClicked(subSequence(range.from, range.to));
+          onTextClickListener.onTextClicked(subSequence(range.from, range.to), range);
         }
 
         @Override
@@ -234,7 +234,7 @@ public class SimpleText extends SpannableString {
   }
 
   public interface OnTextClickListener {
-    void onTextClicked(CharSequence text);
+    void onTextClicked(CharSequence text, Range range);
   }
 
 }

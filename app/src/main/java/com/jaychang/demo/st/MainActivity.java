@@ -2,14 +2,11 @@ package com.jaychang.demo.st;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jaychang.st.Main;
+import com.jaychang.st.Range;
 import com.jaychang.st.SimpleText;
-
-import static com.jaychang.demo.st.R.color.link;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
       .textColor(R.color.link)
       .clickable(textView, R.color.pressedText, R.color.pressedBg, 2, new SimpleText.OnTextClickListener() {
         @Override
-        public void onTextClicked(CharSequence text) {
-          Toast.makeText(MainActivity.this, text.toString(), Toast.LENGTH_SHORT).show();
+        public void onTextClicked(CharSequence text, Range range) {
+          Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
         }
       })
       .first("simple").textColor(R.color.colorAccent)
@@ -38,4 +35,5 @@ public class MainActivity extends AppCompatActivity {
 
     textView.setText(simpleText);
   }
+
 }
