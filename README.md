@@ -14,7 +14,7 @@
 - [x] subscript
 - [x] superscript
 
-
+![](https://github.com/jaychang0917/SimpleText/blob/master/SimpleText_320.gif)
 
 ##Setup
 In your project level build.gradle :
@@ -32,11 +32,25 @@ In your app level build.gradle :
 
 ```java
 dependencies {
-    compile 'com.github.jaychang0917:SocialLoginManager:1.1.2'
+    compile 'com.github.jaychang0917:SimpleText:1.0.1'
 }
 ```
 
 ##Usage
+####Step 1: Match your target text(s)
+| Method                     | Description                                     |
+| -------------              |:-----------------------------------------------:|
+| `first(text)`              | match first occurrence                          |
+| `last(text)`               | match last occurrence                           |
+| `all(text)`                | match all occurrences                           |
+| `all()`                    | match whole text                                |
+| `allStartWith(prefixs...)` | match all occurrences with specified prefix(s)  |
+| `range(from:to)`           | match text at specified position                |
+| `ranges(ranges)`           | match all texts at specified positions          |
+
+####Step 2: Apply style(s)
+
+##Example
 ```java
 TextView textView = (TextView) findViewById(R.id.textView);
 
