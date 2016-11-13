@@ -2,6 +2,8 @@
 
 [![Release](https://jitpack.io/v/jaychang0917/SimpleText.svg)](https://jitpack.io/#jaychang0917/SimpleText)
 
+This libary aims to simplify the creation of spannable string.
+
 ##Features
 - [x] text background (with round corner)
 - [x] click event (with pressed color state)
