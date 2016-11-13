@@ -41,19 +41,22 @@ public class RoundedBackgroundSpan extends ReplacementSpan {
   public void draw(@NonNull Canvas canvas, CharSequence text,
                    int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint) {
     float width = paint.measureText(text.subSequence(start, end).toString());
+    int originalTextColor = paint.getColor();
 
     int extra1Dp = (int)(((TextPaint) paint).density * 1 + 0.5f);
     int newTop = (int) (bottom-paint.getFontSpacing()-paint.descent())+2*extra1Dp;
     int newBottom = bottom - extra1Dp;
-    int newLeft = (int) (x == 0.0f ? x : x - radius);
-    int newRight = (int) (x == 0.0f ? x + width + 2 * radius : x + width + radius);
+    boolean isLeftEdge = x == 0.0f;
+    int newLeft = (int) (isLeftEdge ? x : x - radius);
+    int newRight = (int) (isLeftEdge ? x + width + 2 * radius : x + width + radius);
     RectF rect = new RectF(newLeft, newTop, newRight, newBottom);
     paint.setColor(backgroundColor);
     canvas.drawRoundRect(rect, radius, radius, paint);
 
-    float textX = x == 0.0f ? x + radius : x;
+    float textX = isLeftEdge ? x + radius : x;
     float textY = bottom - paint.getFontMetricsInt().bottom;
-    paint.setColor(textColor);
+    paint.setColor(textColor == 0 ?  originalTextColor: textColor);
     canvas.drawText(text, start, end, textX, textY, paint);
   }
+
 }

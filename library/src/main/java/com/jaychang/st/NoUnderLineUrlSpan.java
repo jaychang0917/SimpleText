@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.text.TextPaint;
 import android.text.style.URLSpan;
+import android.view.View;
 
 @SuppressLint("ParcelCreator")
 public class NoUnderLineUrlSpan extends URLSpan {

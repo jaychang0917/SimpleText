@@ -13,24 +13,13 @@ import android.widget.TextView;
 
 public class LinkTouchMovementMethod extends LinkMovementMethod {
 
-  private static LinkTouchMovementMethod INSTANCE;
   private ClickableSpan touchableSpan;
-  private ForegroundColorSpan textColorSpan;
   private RoundedBackgroundSpan backgroundSpan;
 
-  private LinkTouchMovementMethod(int pressedTextColor,
+  public LinkTouchMovementMethod(int pressedTextColor,
                                   int pressedBackgroundColor,
                                   int backgroundRadius) {
     backgroundSpan = new RoundedBackgroundSpan(pressedTextColor, pressedBackgroundColor, backgroundRadius);
-  }
-
-  public static synchronized LinkTouchMovementMethod getInstance(int pressedTextColor,
-                                                                 int pressedBackgroundColor,
-                                                                 int backgroundRadius) {
-    if (INSTANCE == null) {
-      INSTANCE = new LinkTouchMovementMethod(pressedTextColor, pressedBackgroundColor, backgroundRadius);
-    }
-    return INSTANCE;
   }
 
   @Override

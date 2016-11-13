@@ -1,25 +1,21 @@
 package com.jaychang.st;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.BackgroundColorSpan;
-import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.SubscriptSpan;
 import android.text.style.SuperscriptSpan;
 import android.text.style.TypefaceSpan;
-import android.text.style.URLSpan;
 import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.TextView;
@@ -27,11 +23,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.radius;
+
 public class SimpleText extends SpannableString {
 
   private static final int SPAN_MODE = SPAN_EXCLUSIVE_EXCLUSIVE;
   private ArrayList<Range> rangeList = new ArrayList<>();
   private Context context;
+  private int textColor;
+  private int pressedTextColor;
+  private int pressedBackgroundColor;
+  private int pressedBackgroundRadius;
 
   private SimpleText(Context context, CharSequence text) {
     super(text);
@@ -68,6 +70,13 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
+  public SimpleText all() {
+    rangeList.clear();
+    Range range = Range.create(0, toString().length());
+    rangeList.add(range);
+    return this;
+  }
+
   public SimpleText allStartWith(String... prefixs) {
     rangeList.clear();
     for (String prefix : prefixs) {
@@ -88,20 +97,6 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
-  public SimpleText at(int position, int length) {
-    rangeList.clear();
-    Range range = Range.create(position, position + length);
-    rangeList.add(range);
-    return this;
-  }
-
-  public SimpleText all() {
-    rangeList.clear();
-    Range range = Range.create(0, toString().length());
-    rangeList.add(range);
-    return this;
-  }
-
   public SimpleText range(int from, int to) {
     rangeList.clear();
     Range range = Range.create(from, to + 1);
@@ -118,6 +113,13 @@ public class SimpleText extends SpannableString {
   public SimpleText size(int dp) {
     for (Range range : rangeList) {
       setSpan(new AbsoluteSizeSpan(dp, true), range.from, range.to, SPAN_MODE);
+    }
+    return this;
+  }
+
+  public SimpleText scaleSize(int proportion) {
+    for (Range range : rangeList) {
+      setSpan(new RelativeSizeSpan(proportion), range.from, range.to, SPAN_MODE);
     }
     return this;
   }
@@ -165,19 +167,19 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
-  public SimpleText background(@ColorRes int colorRes, int radius) {
+  public SimpleText background(@ColorRes int colorRes, int radiusDp) {
     int color = ContextCompat.getColor(context, colorRes);
-    int radiusDp = Utils.dp2px(context, radius);
+    int radiusPx = Utils.dp2px(context, radiusDp);
     for (Range range : rangeList) {
-      setSpan(new RoundedBackgroundSpan(color, radiusDp), range.from, range.to, SPAN_MODE);
+      setSpan(new RoundedBackgroundSpan(color, textColor, radiusPx), range.from, range.to, SPAN_MODE);
     }
     return this;
   }
 
   public SimpleText textColor(@ColorRes int colorRes) {
-    int color = ContextCompat.getColor(context, colorRes);
+    textColor = ContextCompat.getColor(context, colorRes);
     for (Range range : rangeList) {
-      setSpan(new ForegroundColorSpan(color), range.from, range.to, SPAN_MODE);
+      setSpan(new ForegroundColorSpan(textColor), range.from, range.to, SPAN_MODE);
     }
     return this;
   }
@@ -203,17 +205,14 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
-  public SimpleText clickable(final TextView view,
-                              @ColorRes int pressedTextColor,
+  public SimpleText clickable(@ColorRes int pressedTextColor,
                               @ColorRes int pressedBackgroundColor,
                               int pressedBackgroundRadius,
                               final OnTextClickListener onTextClickListener) {
 
-    int pTextColor = ContextCompat.getColor(context, pressedTextColor);
-    int pBgColor = ContextCompat.getColor(context, pressedBackgroundColor);
-    final int radiusDp = Utils.dp2px(context, pressedBackgroundRadius);
-
-    view.setMovementMethod(LinkTouchMovementMethod.getInstance(pTextColor, pBgColor, radiusDp));
+    this.pressedTextColor = ContextCompat.getColor(context, pressedTextColor);
+    this.pressedBackgroundColor = ContextCompat.getColor(context, pressedBackgroundColor);
+    this.pressedBackgroundRadius = Utils.dp2px(context, pressedBackgroundRadius);
 
     for (final Range range : rangeList) {
       ClickableSpan span = new ClickableSpan() {
@@ -231,6 +230,10 @@ public class SimpleText extends SpannableString {
     }
 
     return this;
+  }
+
+  public void linkify(TextView textView) {
+    textView.setMovementMethod(new LinkTouchMovementMethod(pressedTextColor, pressedBackgroundColor, pressedBackgroundRadius));
   }
 
   public interface OnTextClickListener {

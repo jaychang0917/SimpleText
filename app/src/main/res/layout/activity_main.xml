@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     android:id="@+id/activity_main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical">
 
     <TextView
@@ -15,7 +14,8 @@
         android:padding="8dp"
         tools:text="\#foo"
         android:layout_gravity="center"
+        android:textColor="#000"
         android:gravity="center"
         android:textSize="18sp" />
 
-</LinearLayout>
+</FrameLayout>

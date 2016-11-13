@@ -24,14 +24,16 @@ public class MainActivity extends AppCompatActivity {
     SimpleText simpleText = SimpleText.create(this, text)
       .allStartWith("#", "@")
       .textColor(R.color.link)
-      .clickable(textView, R.color.pressedText, R.color.pressedBg, 2, new SimpleText.OnTextClickListener() {
+      .clickable(R.color.pressedText, R.color.pressedBg, 2, new SimpleText.OnTextClickListener() {
         @Override
         public void onTextClicked(CharSequence text, Range range) {
-          Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
+          Toast.makeText(MainActivity.this, text.toString(), Toast.LENGTH_SHORT).show();
         }
       })
       .first("simple").textColor(R.color.colorAccent)
       .first("SimpleText").bold().textColor(R.color.link).url(url);
+
+    simpleText.linkify(textView);
 
     textView.setText(simpleText);
   }
