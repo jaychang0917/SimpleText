@@ -21,8 +21,7 @@ public class LinkTouchMovementMethod extends LinkMovementMethod {
   private LinkTouchMovementMethod(int pressedTextColor,
                                   int pressedBackgroundColor,
                                   int backgroundRadius) {
-    textColorSpan = new ForegroundColorSpan(pressedTextColor);
-    backgroundSpan = new RoundedBackgroundSpan(pressedBackgroundColor, backgroundRadius);
+    backgroundSpan = new RoundedBackgroundSpan(pressedTextColor, pressedBackgroundColor, backgroundRadius);
   }
 
   public static synchronized LinkTouchMovementMethod getInstance(int pressedTextColor,
@@ -87,12 +86,9 @@ public class LinkTouchMovementMethod extends LinkMovementMethod {
 
   public void setBackground(Spannable spannable) {
     spannable.setSpan(backgroundSpan, spannable.getSpanStart(touchableSpan), spannable.getSpanEnd(touchableSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//    spannable.setSpan(textColorSpan, spannable.getSpanStart(touchableSpan), spannable.getSpanEnd(touchableSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
   }
 
-  // todo remove background
   public void removeBackground(Spannable spannable) {
     spannable.removeSpan(backgroundSpan);
-//    spannable.removeSpan(textColorSpan);
   }
 }

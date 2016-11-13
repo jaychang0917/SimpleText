@@ -21,17 +21,20 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textView = (TextView) findViewById(R.id.textView);
 
-    String text = "I am a simple #foo #bar text.";
+    String text = "This is a simple #foo @bar text \n SimpleText";
+    String url = "https://github.com/jaychang0917/SimpleText";
 
     SimpleText simpleText = SimpleText.create(this, text)
-      .allStartWith("#")
-      .textColor(link)
+      .allStartWith("#", "@")
+      .textColor(R.color.link)
       .clickable(textView, R.color.pressedText, R.color.pressedBg, 2, new SimpleText.OnTextClickListener() {
         @Override
         public void onTextClicked(CharSequence text) {
           Toast.makeText(MainActivity.this, text.toString(), Toast.LENGTH_SHORT).show();
         }
-      });
+      })
+      .first("simple").textColor(R.color.colorAccent)
+      .first("SimpleText").bold().textColor(R.color.link).url(url);
 
     textView.setText(simpleText);
   }

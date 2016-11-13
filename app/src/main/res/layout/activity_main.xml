@@ -15,6 +15,7 @@
         android:padding="8dp"
         tools:text="\#foo"
         android:layout_gravity="center"
+        android:gravity="center"
         android:textSize="18sp" />
 
 </LinearLayout>

@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#dd34cf</color>
+    <color name="colorAccent">#67aa8c</color>
     <color name="link">#3940c2</color>
     <color name="tag">#f4f4f4</color>
-    <color name="pressedText">#045388</color>
-    <color name="pressedBg">#797777</color>
+    <color name="pressedText">#7dabca</color>
+    <color name="pressedBg">#b57575</color>
 </resources>

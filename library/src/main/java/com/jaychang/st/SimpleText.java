@@ -68,11 +68,13 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
-  public SimpleText allStartWith(String prefix) {
+  public SimpleText allStartWith(String... prefixs) {
     rangeList.clear();
-    List<Range> ranges = StringUtils.ranges(toString(), prefix + "\\w+");
-    for (Range range : ranges) {
-      rangeList.add(range);
+    for (String prefix : prefixs) {
+      List<Range> ranges = StringUtils.ranges(toString(), prefix + "\\w+");
+      for (Range range : ranges) {
+        rangeList.add(range);
+      }
     }
     return this;
   }
@@ -196,7 +198,7 @@ public class SimpleText extends SpannableString {
 
   public SimpleText url(String url) {
     for (Range range : rangeList) {
-      setSpan(new URLSpan(url), range.from, range.to, SPAN_MODE);
+      setSpan(new NoUnderLineUrlSpan(url), range.from, range.to, SPAN_MODE);
     }
     return this;
   }
