@@ -88,15 +88,6 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
-  public SimpleText between(String startText, String endText) {
-    rangeList.clear();
-    int startIndex = toString().indexOf(startText) + startText.length();
-    int endIndex = toString().lastIndexOf(endText);
-    Range range = Range.create(startIndex, endIndex);
-    rangeList.add(range);
-    return this;
-  }
-
   public SimpleText range(int from, int to) {
     rangeList.clear();
     Range range = Range.create(from, to + 1);
