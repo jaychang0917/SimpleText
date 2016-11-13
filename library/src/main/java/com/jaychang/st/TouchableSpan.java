@@ -1,30 +1,40 @@
 package com.jaychang.st;
 
+import android.graphics.Color;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
+import android.view.View;
 
-public abstract class TouchableSpan extends ClickableSpan {
+public class TouchableSpan extends ClickableSpan {
 
   private boolean isPressed;
-  private int pressedBackgroundColor;
-  private int normalTextColor;
   private int pressedTextColor;
+  private int pressedBackgroundColor;
 
-  public TouchableSpan(int normalTextColor, int pressedTextColor, int pressedBackgroundColor) {
-   this.normalTextColor = normalTextColor;
-   this.pressedTextColor = pressedTextColor;
-   this.pressedBackgroundColor = pressedBackgroundColor;
+  public TouchableSpan(int pressedTextColor, int pressedBackgroundColor) {
+    this.pressedTextColor = pressedTextColor;
+    this.pressedBackgroundColor = pressedBackgroundColor;
   }
 
-  public void setPressed(boolean isSelected) {
-    isPressed = isSelected;
+  public void setPressed(boolean pressed){
+    this.isPressed = pressed;
+  }
+
+  public boolean isPressed(){
+    return this.isPressed;
+  }
+
+  @Override
+  public void onClick(View widget) {
+    setPressed(!isPressed());
+    widget.invalidate();
   }
 
   @Override
   public void updateDrawState(TextPaint ds) {
-    super.updateDrawState(ds);
-    ds.setColor(isPressed ? pressedTextColor : normalTextColor);
-    ds.bgColor = isPressed ? pressedBackgroundColor : 0xffeeeeee;
-    ds.setUnderlineText(false);
+    if(!isPressed()){
+      ds.setColor(pressedTextColor);
+      ds.bgColor = pressedBackgroundColor;
+    }
   }
 }

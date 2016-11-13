@@ -1,7 +1,9 @@
 package com.jaychang.st;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
@@ -12,7 +14,6 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.MetricAffectingSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.SubscriptSpan;
@@ -25,8 +26,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.radius;
 
 public class SimpleText extends SpannableString {
 
@@ -114,102 +113,126 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
-  private void applySpans(CharacterStyle span) {
-    for (Range range : rangeList) {
-      setSpan(span, range.from, range.to, SPAN_MODE);
-    }
-  }
-
   public SimpleText size(int dp) {
-    applySpans(new AbsoluteSizeSpan(dp, true));
+    for (Range range : rangeList) {
+      setSpan(new AbsoluteSizeSpan(dp, true), range.from, range.to, SPAN_MODE);
+    }
     return this;
   }
 
   public SimpleText bold() {
-    applySpans(new StyleSpan(Typeface.BOLD));
+    for (Range range : rangeList) {
+      setSpan(new StyleSpan(Typeface.BOLD), range.from, range.to, SPAN_MODE);
+    }
     return this;
   }
 
   public SimpleText italic() {
-    applySpans(new StyleSpan(Typeface.ITALIC));
+    for (Range range : rangeList) {
+      setSpan(new StyleSpan(Typeface.ITALIC), range.from, range.to, SPAN_MODE);
+    }
     return this;
   }
 
   public SimpleText font(String font) {
-    applySpans(new TypefaceSpan(font));
+    for (Range range : rangeList) {
+      setSpan(new TypefaceSpan(font), range.from, range.to, SPAN_MODE);
+    }
     return this;
   }
 
   public SimpleText strikethrough() {
-    applySpans(new StrikethroughSpan());
+    for (Range range : rangeList) {
+      setSpan(new StrikethroughSpan(), range.from, range.to, SPAN_MODE);
+    }
     return this;
   }
 
   public SimpleText underline() {
-    applySpans(new UnderlineSpan());
+    for (Range range : rangeList) {
+      setSpan(new UnderlineSpan(), range.from, range.to, SPAN_MODE);
+    }
     return this;
   }
 
-  public SimpleText backgroundColor(@ColorRes int colorRes) {
+  public SimpleText background(@ColorRes int colorRes) {
     int color = ContextCompat.getColor(context, colorRes);
-    applySpans(new BackgroundColorSpan(color));
+    for (Range range : rangeList) {
+      setSpan(new BackgroundColorSpan(color), range.from, range.to, SPAN_MODE);
+    }
     return this;
   }
 
-  public SimpleText roundBackground(@ColorRes int colorRes, int radius) {
+  public SimpleText background(@ColorRes int colorRes, int radius) {
     int color = ContextCompat.getColor(context, colorRes);
-    applySpans(new RoundedBackgroundSpan(color, radius));
+    int radiusDp = Utils.dp2px(context, radius);
+    for (Range range : rangeList) {
+      setSpan(new RoundedBackgroundSpan(color, radiusDp), range.from, range.to, SPAN_MODE);
+    }
     return this;
   }
 
   public SimpleText textColor(@ColorRes int colorRes) {
     int color = ContextCompat.getColor(context, colorRes);
-    applySpans(new ForegroundColorSpan(color));
-    return this;
-  }
-
-  public SimpleText subscript() {
-    applySpans(new SubscriptSpan());
-    return this;
-  }
-
-  public SimpleText superscript() {
-    applySpans(new SuperscriptSpan());
-    return this;
-  }
-
-  public SimpleText url(String url) {
-    applySpans(new URLSpan(url));
-    return this;
-  }
-
-
-  // todo clicktable
-  public SimpleText bind(TextView textView) {
-    textView.setMovementMethod(LinkTouchMovementMethod.getInstance());
-    return this;
-  }
-
-  public SimpleText clickable(final View.OnClickListener onClickListener, final boolean underline) {
     for (Range range : rangeList) {
-      ClickableSpan span = new ClickableSpan() {
-        @Override
-        public void onClick(View widget) {
-          onClickListener.onClick(widget);
-        }
-
-        @Override
-        public void updateDrawState(TextPaint ds) {
-          ds.setUnderlineText(underline);
-        }
-      };
-      setSpan(span, range.from, range.to, SPAN_MODE);
+      setSpan(new ForegroundColorSpan(color), range.from, range.to, SPAN_MODE);
     }
     return this;
   }
 
-  public SimpleText clickable(final View.OnClickListener onClickListener) {
-    return clickable(onClickListener, false);
+  public SimpleText subscript() {
+    for (Range range : rangeList) {
+      setSpan(new SubscriptSpan(), range.from, range.to, SPAN_MODE);
+    }
+    return this;
+  }
+
+  public SimpleText superscript() {
+    for (Range range : rangeList) {
+      setSpan(new SuperscriptSpan(), range.from, range.to, SPAN_MODE);
+    }
+    return this;
+  }
+
+  public SimpleText url(String url) {
+    for (Range range : rangeList) {
+      setSpan(new URLSpan(url), range.from, range.to, SPAN_MODE);
+    }
+    return this;
+  }
+
+  public SimpleText clickable(final TextView view,
+                              @ColorRes int pressedTextColor,
+                              @ColorRes int pressedBackgroundColor,
+                              int pressedBackgroundRadius,
+                              final OnTextClickListener onTextClickListener) {
+
+    int pTextColor = ContextCompat.getColor(context, pressedTextColor);
+    int pBgColor = ContextCompat.getColor(context, pressedBackgroundColor);
+    final int radiusDp = Utils.dp2px(context, pressedBackgroundRadius);
+
+    view.setMovementMethod(LinkTouchMovementMethod.getInstance(pTextColor, pBgColor, radiusDp));
+
+    for (final Range range : rangeList) {
+      ClickableSpan span = new ClickableSpan() {
+        @Override
+        public void onClick(View widget) {
+          onTextClickListener.onTextClicked(subSequence(range.from, range.to));
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+          ds.setUnderlineText(false);
+        }
+      };
+      setSpan(span, range.from, range.to, SPAN_MODE);
+    }
+
+    return this;
+  }
+
+  public interface OnTextClickListener {
+    void onTextClicked(CharSequence text);
   }
 
 }

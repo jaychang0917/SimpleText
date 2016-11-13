@@ -1,44 +1,68 @@
 package com.jaychang.st;
 
+import android.graphics.Color;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
 public class LinkTouchMovementMethod extends LinkMovementMethod {
-  
-  private TouchableSpan touchableSpan;
+
+  private static LinkTouchMovementMethod INSTANCE;
+  private ClickableSpan touchableSpan;
+  private ForegroundColorSpan textColorSpan;
+  private RoundedBackgroundSpan backgroundSpan;
+
+  private LinkTouchMovementMethod(int pressedTextColor,
+                                  int pressedBackgroundColor,
+                                  int backgroundRadius) {
+    textColorSpan = new ForegroundColorSpan(pressedTextColor);
+    backgroundSpan = new RoundedBackgroundSpan(pressedBackgroundColor, backgroundRadius);
+  }
+
+  public static synchronized LinkTouchMovementMethod getInstance(int pressedTextColor,
+                                                                 int pressedBackgroundColor,
+                                                                 int backgroundRadius) {
+    if (INSTANCE == null) {
+      INSTANCE = new LinkTouchMovementMethod(pressedTextColor, pressedBackgroundColor, backgroundRadius);
+    }
+    return INSTANCE;
+  }
 
   @Override
   public boolean onTouchEvent(TextView textView, Spannable spannable, MotionEvent event) {
+    textView.setHighlightColor(Color.TRANSPARENT);
+
     if (event.getAction() == MotionEvent.ACTION_DOWN) {
-      touchableSpan = getTouchableSpan(textView, spannable, event);
+      touchableSpan = getPressedSpan(textView, spannable, event);
       if (touchableSpan != null) {
-        touchableSpan.setPressed(true);
-        Selection.setSelection(spannable, spannable.getSpanStart(touchableSpan),
-          spannable.getSpanEnd(touchableSpan));
+        Selection.setSelection(spannable, spannable.getSpanStart(touchableSpan), spannable.getSpanEnd(touchableSpan));
+        setBackground(spannable);
       }
     } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-      TouchableSpan touchedSpan = getTouchableSpan(textView, spannable, event);
+      ClickableSpan touchedSpan = getPressedSpan(textView, spannable, event);
       if (touchableSpan != null && touchedSpan != touchableSpan) {
-        touchableSpan.setPressed(false);
+        removeBackground(spannable);
         touchableSpan = null;
         Selection.removeSelection(spannable);
       }
     } else {
       if (touchableSpan != null) {
-        touchableSpan.setPressed(false);
         super.onTouchEvent(textView, spannable, event);
       }
+      removeBackground(spannable);
       touchableSpan = null;
       Selection.removeSelection(spannable);
     }
     return true;
   }
 
-  private TouchableSpan getTouchableSpan(TextView textView, Spannable spannable, MotionEvent event) {
+  private ClickableSpan getPressedSpan(TextView textView, Spannable spannable, MotionEvent event) {
 
     int x = (int) event.getX();
     int y = (int) event.getY();
@@ -53,12 +77,22 @@ public class LinkTouchMovementMethod extends LinkMovementMethod {
     int line = layout.getLineForVertical(y);
     int off = layout.getOffsetForHorizontal(line, x);
 
-    TouchableSpan[] link = spannable.getSpans(off, off, TouchableSpan.class);
-    TouchableSpan touchedSpan = null;
+    ClickableSpan[] link = spannable.getSpans(off, off, ClickableSpan.class);
+    ClickableSpan touchedSpan = null;
     if (link.length > 0) {
       touchedSpan = link[0];
     }
     return touchedSpan;
   }
 
+  public void setBackground(Spannable spannable) {
+    spannable.setSpan(backgroundSpan, spannable.getSpanStart(touchableSpan), spannable.getSpanEnd(touchableSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//    spannable.setSpan(textColorSpan, spannable.getSpanStart(touchableSpan), spannable.getSpanEnd(touchableSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+  }
+
+  // todo remove background
+  public void removeBackground(Spannable spannable) {
+    spannable.removeSpan(backgroundSpan);
+//    spannable.removeSpan(textColorSpan);
+  }
 }
