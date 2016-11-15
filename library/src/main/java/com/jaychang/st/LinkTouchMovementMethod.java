@@ -80,4 +80,5 @@ public class LinkTouchMovementMethod extends LinkMovementMethod {
   public void removeBackground(Spannable spannable) {
     spannable.removeSpan(backgroundSpan);
   }
+
 }
