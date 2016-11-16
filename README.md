@@ -5,6 +5,7 @@
 This libary aims to simplify the creation of spannable string.
 
 ##Features
+- [x] bind a tag with the clicked text. (added in v1.1.0)
 - [x] text background (with round corner)
 - [x] click event (with pressed color state)
 - [x] text size
@@ -34,21 +35,22 @@ In your app level build.gradle :
 
 ```java
 dependencies {
-    compile 'com.github.jaychang0917:SimpleText:1.0.1'
+    compile 'com.github.jaychang0917:SimpleText:1.1.0'
 }
 ```
 
 ##Usage
 ####Step 1: Match your target text(s)
-| Method                     | Description                                     |
-| -------------              |:-----------------------------------------------:|
-| `first(text)`              | match first occurrence                          |
-| `last(text)`               | match last occurrence                           |
-| `all(text)`                | match all occurrences                           |
-| `all()`                    | match whole text                                |
-| `allStartWith(prefixs...)` | match all occurrences with specified prefix(s)  |
-| `range(from:to)`           | match text at specified position                |
-| `ranges(ranges)`           | match all texts at specified positions          |
+| Method                       | Description                                     |
+| -------------                |:-----------------------------------------------:|
+| `first(text)`                | match first occurrence                          |
+| `last(text)`                 | match last occurrence                           |
+| `all(text)`                  | match all occurrences                           |
+| `all()`                      | match whole text                                |
+| `allStartWith(prefixs...)`   | match all occurrences with specified prefix(s)  |
+| `range(from:to)`             | match text at specified position                |
+| `ranges(ranges)`             | match all texts at specified positions          |
+| `between(startText:endText)` | match text between two texts                    |
 
 ####Step 2: Apply style(s)
 
@@ -59,12 +61,19 @@ TextView textView = (TextView) findViewById(R.id.textView);
 String text = "This is a simple #foo @bar text \n SimpleText";
 String url = "https://github.com/jaychang0917/SimpleText";
 
+User foo = new User("1001", "foo");
+User bar = new User("1002", "bar");
+
 SimpleText simpleText = SimpleText.create(this, text)
-  .allStartWith("#", "@").textColor(R.color.link)
-  .clickable(R.color.pressedText, R.color.pressedBg, 2, new SimpleText.OnTextClickListener() {
+  .allStartWith("#", "@")
+  .tags(foo, bar)
+  .textColor(R.color.link)
+  .pressedTextColor(R.color.pressedText)
+  .pressedBackground(R.color.pressedBg, 2)
+  .onClick(new OnTextClickListener() {
     @Override
-    public void onTextClicked(CharSequence text, Range range) {
-      Toast.makeText(MainActivity.this, text.toString(), Toast.LENGTH_SHORT).show();
+    public void onClicked(CharSequence text, Range range, Object tag) {
+      Toast.makeText(MainActivity.this, tag.toString(), Toast.LENGTH_SHORT).show();
     }
   })
   .first("simple").textColor(R.color.colorAccent)
@@ -75,9 +84,13 @@ simpleText.linkify(textView); // enable click event for `clickable()` and `url()
 textView.setText(simpleText);
 ```
 
+##Change Log
+####Version 1.1.0 (2016-11-017)
+- Support binding a tag to the clicked text.
+- Add `between` matching method.
+
 ##Todo
-- [ ] associate a tag with the clicked text.
-- [ ] onClick and onLongClick event
+- [ ] onLongClick event
 
 ##License
 ```
