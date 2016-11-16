@@ -75,6 +75,10 @@ simpleText.linkify(textView); // enable click event for `clickable()` and `url()
 textView.setText(simpleText);
 ```
 
+##Todo
+- [ ] associate a tag with the clicked text.
+- [ ] onClick and onLongClick event
+
 ##License
 ```
 Copyright 2016 Jay Chang
