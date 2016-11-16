@@ -79,7 +79,7 @@ SimpleText simpleText = SimpleText.create(this, text)
   .first("simple").textColor(R.color.colorAccent)
   .first("SimpleText").bold().textColor(R.color.link).url(url);
 
-simpleText.linkify(textView); // enable click event for `clickable()` and `url()`
+simpleText.linkify(textView); // enable click event
 
 textView.setText(simpleText);
 ```
