@@ -101,6 +101,15 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
+  public SimpleText between(String startText, String endText) {
+    rangeList.clear();
+    int startIndex = toString().indexOf(startText) + startText.length();
+    int endIndex = toString().lastIndexOf(endText);
+    Range range = Range.create(startIndex, endIndex);
+    rangeList.add(range);
+    return this;
+  }
+
   public SimpleText size(int dp) {
     for (Range range : rangeList) {
       setSpan(new AbsoluteSizeSpan(dp, true), range.from, range.to, SPAN_MODE);
