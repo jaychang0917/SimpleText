@@ -76,7 +76,7 @@ textView.setText(simpleText);
 ```
 
 ##Todo
-- [] associate a tag with the clicked text.
+- [ ] associate a tag with the clicked text.
 
 ##License
 ```
