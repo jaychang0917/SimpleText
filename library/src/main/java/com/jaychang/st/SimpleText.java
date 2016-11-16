@@ -106,8 +106,8 @@ public class SimpleText extends SpannableString {
 
   public SimpleText between(String startText, String endText) {
     rangeList.clear();
-    int startIndex = toString().indexOf(startText) + startText.length();
-    int endIndex = toString().lastIndexOf(endText);
+    int startIndex = toString().indexOf(startText) + startText.length() + 1;
+    int endIndex = toString().lastIndexOf(endText) - 1;
     Range range = Range.create(startIndex, endIndex);
     rangeList.add(range);
     return this;
