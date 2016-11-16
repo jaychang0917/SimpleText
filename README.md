@@ -77,6 +77,7 @@ textView.setText(simpleText);
 
 ##Todo
 - [ ] associate a tag with the clicked text.
+- [ ] onClick and onLongClick event
 
 ##License
 ```
