@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jaychang.st.OnTextClickListener;
 import com.jaychang.st.Range;
 import com.jaychang.st.SimpleText;
 
@@ -21,13 +22,19 @@ public class MainActivity extends AppCompatActivity {
     String text = "This is a simple #foo @bar text \n SimpleText";
     String url = "https://github.com/jaychang0917/SimpleText";
 
+    User foo = new User("1001", "foo");
+    User bar = new User("1002", "bar");
+
     SimpleText simpleText = SimpleText.create(this, text)
       .allStartWith("#", "@")
+      .tags(foo, bar)
       .textColor(R.color.link)
-      .clickable(R.color.pressedText, R.color.pressedBg, 2, new SimpleText.OnTextClickListener() {
+      .pressedTextColor(R.color.pressedText)
+      .pressedBackground(R.color.pressedBg, 2)
+      .onClick(new OnTextClickListener() {
         @Override
-        public void onTextClicked(CharSequence text, Range range) {
-          Toast.makeText(MainActivity.this, text.toString(), Toast.LENGTH_SHORT).show();
+        public void onClicked(CharSequence text, Range range, Object tag) {
+          Toast.makeText(MainActivity.this, tag.toString(), Toast.LENGTH_SHORT).show();
         }
       })
       .first("simple").textColor(R.color.colorAccent)

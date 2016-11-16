@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.ArrayMap;
 import android.text.SpannableString;
 import android.text.TextPaint;
 import android.text.style.AbsoluteSizeSpan;
@@ -17,18 +18,20 @@ import android.text.style.SubscriptSpan;
 import android.text.style.SuperscriptSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.UnderlineSpan;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.radius;
+import static android.R.attr.tag;
 
 public class SimpleText extends SpannableString {
 
   private static final int SPAN_MODE = SPAN_EXCLUSIVE_EXCLUSIVE;
   private ArrayList<Range> rangeList = new ArrayList<>();
+  private ArrayMap<Range,Object> tagsMap = new ArrayMap<>();
   private Context context;
   private int textColor;
   private int pressedTextColor;
@@ -205,6 +208,58 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
+  public SimpleText pressedTextColor(@ColorRes int colorRes) {
+    this.pressedTextColor = ContextCompat.getColor(context, colorRes);
+    return this;
+  }
+
+  public SimpleText pressedBackground(@ColorRes int colorRes, int radiusDp) {
+    this.pressedBackgroundColor = ContextCompat.getColor(context, colorRes);
+    this.pressedBackgroundRadius = Utils.dp2px(context, radiusDp);
+    return this;
+  }
+
+  public SimpleText pressedBackground(@ColorRes int colorRes) {
+    return pressedBackground(colorRes, 0);
+  }
+
+  public SimpleText onClick(final com.jaychang.st.OnTextClickListener onTextClickListener) {
+    for (final Range range : rangeList) {
+      NoUnderLineClickableSpan span = new NoUnderLineClickableSpan(
+        subSequence(range.from, range.to),
+        tagsMap.get(range),
+        range,
+        onTextClickListener);
+      setSpan(span, range.from, range.to, SPAN_MODE);
+    }
+
+    return this;
+  }
+
+  public SimpleText tag(Object tag) {
+    Range lastRange = rangeList.get(rangeList.size() - 1);
+    tagsMap.put(lastRange, tag);
+    return this;
+  }
+
+  public SimpleText tags(Object... tags) {
+    int i = 0;
+    for (Object tag : tags) {
+      tagsMap.put(rangeList.get(i++), tag);
+    }
+    return this;
+  }
+
+  public void linkify(TextView textView) {
+    textView.setMovementMethod(new LinkTouchMovementMethod(pressedTextColor, pressedBackgroundColor, pressedBackgroundRadius));
+  }
+
+  @Deprecated
+  public interface OnTextClickListener {
+    void onTextClicked(CharSequence text, Range range);
+  }
+
+  @Deprecated
   public SimpleText clickable(@ColorRes int pressedTextColor,
                               @ColorRes int pressedBackgroundColor,
                               int pressedBackgroundRadius,
@@ -230,14 +285,6 @@ public class SimpleText extends SpannableString {
     }
 
     return this;
-  }
-
-  public void linkify(TextView textView) {
-    textView.setMovementMethod(new LinkTouchMovementMethod(pressedTextColor, pressedBackgroundColor, pressedBackgroundRadius));
-  }
-
-  public interface OnTextClickListener {
-    void onTextClicked(CharSequence text, Range range);
   }
 
 }

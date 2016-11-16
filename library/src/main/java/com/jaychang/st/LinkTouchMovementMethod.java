@@ -17,8 +17,8 @@ public class LinkTouchMovementMethod extends LinkMovementMethod {
   private RoundedBackgroundSpan backgroundSpan;
 
   public LinkTouchMovementMethod(int pressedTextColor,
-                                  int pressedBackgroundColor,
-                                  int backgroundRadius) {
+                                 int pressedBackgroundColor,
+                                 int backgroundRadius) {
     backgroundSpan = new RoundedBackgroundSpan(pressedTextColor, pressedBackgroundColor, backgroundRadius);
   }
 
