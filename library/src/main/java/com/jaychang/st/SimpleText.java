@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.R.attr.tag;
@@ -243,6 +244,10 @@ public class SimpleText extends SpannableString {
   }
 
   public SimpleText tags(Object... tags) {
+    return tags(Arrays.asList(tags));
+  }
+
+  public SimpleText tags(List<Object> tags) {
     int i = 0;
     for (Object tag : tags) {
       tagsMap.put(rangeList.get(i++), tag);
