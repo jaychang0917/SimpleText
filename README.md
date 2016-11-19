@@ -35,7 +35,7 @@ In your app level build.gradle :
 
 ```java
 dependencies {
-    compile 'com.github.jaychang0917:SimpleText:1.1.1'
+    compile 'com.github.jaychang0917:SimpleText:1.1.2'
 }
 ```
 
