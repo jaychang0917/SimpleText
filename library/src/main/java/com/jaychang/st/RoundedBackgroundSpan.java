@@ -56,11 +56,9 @@ public class RoundedBackgroundSpan extends ReplacementSpan {
     }
 
     if (textColor != 0) {
-      int originalTextColor = paint.getColor();
       float textX = isLeftEdge ? x + radius : x;
-      float textY = backgroundColor == 0 ? bottom - paint.descent() : bottom - paint.getFontMetricsInt().bottom;
-      paint.setColor(textColor == 0 ? originalTextColor : textColor);
-      canvas.drawText(text, start, end, textX, textY, paint);
+      paint.setColor(textColor);
+      canvas.drawText(text, start, end, textX, y, paint);
     }
   }
 
