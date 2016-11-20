@@ -35,7 +35,7 @@ In your app level build.gradle :
 
 ```java
 dependencies {
-    compile 'com.github.jaychang0917:SimpleText:1.1.1'
+    compile 'com.github.jaychang0917:SimpleText:1.1.2'
 }
 ```
 
@@ -85,9 +85,7 @@ textView.setText(simpleText);
 ```
 
 ##Change Log
-####Version 1.1.1 (2016-11-17)
-- Support binding a tag to the clicked text.
-- Add `between` matching method.
+[Change Log](https://github.com/jaychang0917/SimpleText/blob/master/CHANGLOG.md)
 
 ##Todo
 - [ ] onLongClick event
