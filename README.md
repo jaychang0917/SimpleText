@@ -18,7 +18,7 @@ This libary aims to simplify the creation of spannable string.
 - [x] subscript
 - [x] superscript
 
-![](https://github.com/jaychang0917/SimpleText/blob/master/SimpleText.gif)
+![](https://github.com/jaychang0917/SimpleText/blob/master/SimpleText_v1_2_0.gif)
 
 ##Setup
 In your project level build.gradle :
@@ -93,9 +93,6 @@ textView.setText(simpleText);
 
 ##Change Log
 [Change Log](https://github.com/jaychang0917/SimpleText/blob/master/CHANGLOG.md)
-
-##Todo
-- []
 
 ##License
 ```
