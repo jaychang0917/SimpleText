@@ -5,8 +5,8 @@
 This libary aims to simplify the creation of spannable string.
 
 ##Features
-- [x] long click event (added in v1.2.0)
-- [x] bind a tag with the clicked text (added in v1.1.1)
+- [x] long click event (added in v1.2.0) 🆕
+- [x] bind a tag with the clicked text (added in v1.1.1) 🆕
 - [x] text background (with round corner)
 - [x] click event (with pressed color state)
 - [x] text size
