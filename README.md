@@ -5,7 +5,8 @@
 This libary aims to simplify the creation of spannable string.
 
 ##Features
-- [x] bind a tag with the clicked text. (added in v1.1.1)
+- [x] long click event (added in v1.2.0) 🆕
+- [x] bind a tag with the clicked text (added in v1.1.1) 🆕
 - [x] text background (with round corner)
 - [x] click event (with pressed color state)
 - [x] text size
@@ -17,7 +18,7 @@ This libary aims to simplify the creation of spannable string.
 - [x] subscript
 - [x] superscript
 
-![](https://github.com/jaychang0917/SimpleText/blob/master/SimpleText.gif)
+![](https://github.com/jaychang0917/SimpleText/blob/master/SimpleText_v1_2_0.gif)
 
 ##Setup
 In your project level build.gradle :
@@ -35,7 +36,7 @@ In your app level build.gradle :
 
 ```java
 dependencies {
-    compile 'com.github.jaychang0917:SimpleText:1.1.2'
+    compile 'com.github.jaychang0917:SimpleText:1.2.0'
 }
 ```
 
@@ -77,7 +78,13 @@ SimpleText simpleText = SimpleText.create(this, text)
     }
   })
   .first("simple").textColor(R.color.colorAccent)
-  .first("SimpleText").bold().textColor(R.color.link).url(url);
+  .first("SimpleText").bold().textColor(R.color.link).url(url)
+  .onLongClick(new OnTextLongClickListener() {
+    @Override
+    public void onLongClicked(CharSequence text, Range range, Object tag) {
+      Toast.makeText(MainActivity.this, "[long click] to share " + tag.toString(), Toast.LENGTH_SHORT).show();
+    }
+  });
 
 simpleText.linkify(textView); // enable click event
 
@@ -86,9 +93,6 @@ textView.setText(simpleText);
 
 ##Change Log
 [Change Log](https://github.com/jaychang0917/SimpleText/blob/master/CHANGLOG.md)
-
-##Todo
-- [ ] onLongClick event
 
 ##License
 ```
