@@ -204,7 +204,7 @@ public class SimpleText extends SpannableString {
     for (Range range : rangeList) {
       CustomClickableSpan span = new CustomClickableSpan(
         subSequence(range.from, range.to),
-        tagsMap.get(range),
+        url,
         range,
         new com.jaychang.st.OnTextClickListener() {
           @Override

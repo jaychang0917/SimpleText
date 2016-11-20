@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textView = (TextView) findViewById(R.id.textView);
 
     String text = "This is a simple #foo @bar text \n SimpleText";
-    final String url = "https://github.com/jaychang0917/SimpleText";
+    String url = "https://github.com/jaychang0917/SimpleText";
 
     User foo = new User("1001", "foo");
     User bar = new User("1002", "bar");
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
       .onLongClick(new OnTextLongClickListener() {
         @Override
         public void onLongClicked(CharSequence text, Range range, Object tag) {
-          Toast.makeText(MainActivity.this, "[long click] to share " + url, Toast.LENGTH_SHORT).show();
+          Toast.makeText(MainActivity.this, "[long click] to share " + tag.toString(), Toast.LENGTH_SHORT).show();
         }
       });
 
