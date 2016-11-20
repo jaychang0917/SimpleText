@@ -11,22 +11,22 @@ import android.text.style.ReplacementSpan;
 import static android.R.attr.padding;
 import static android.R.attr.width;
 
-public class RoundedBackgroundSpan extends ReplacementSpan {
+class RoundedBackgroundSpan extends ReplacementSpan {
 
   private int radius = 0;
   private int backgroundColor;
   private int textColor;
 
-  public RoundedBackgroundSpan(@ColorInt int textColor,
-                               @ColorInt int backgroundColor,
-                               int radius) {
+  RoundedBackgroundSpan(@ColorInt int textColor,
+                        @ColorInt int backgroundColor,
+                        int radius) {
     super();
     this.backgroundColor = backgroundColor;
     this.textColor = textColor;
     this.radius = radius;
   }
 
-  public RoundedBackgroundSpan(@ColorInt int backgroundColor,
+  RoundedBackgroundSpan(@ColorInt int backgroundColor,
                                int radius) {
     super();
     this.backgroundColor = backgroundColor;

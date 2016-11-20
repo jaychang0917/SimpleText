@@ -1,6 +1,7 @@
 package com.jaychang.st;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
@@ -18,15 +19,12 @@ import android.text.style.SubscriptSpan;
 import android.text.style.SuperscriptSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.UnderlineSpan;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static android.R.attr.tag;
 
 public class SimpleText extends SpannableString {
 
@@ -41,7 +39,7 @@ public class SimpleText extends SpannableString {
 
   private SimpleText(Context context, CharSequence text) {
     super(text);
-    this.context = context.getApplicationContext();
+    this.context = context;
   }
 
   public static SimpleText create(Context context, CharSequence text) {
@@ -66,7 +64,7 @@ public class SimpleText extends SpannableString {
 
   public SimpleText all(String target) {
     rangeList.clear();
-    List<Integer> indexes = StringUtils.indexesOf(toString(), target);
+    List<Integer> indexes = Utils.indexesOf(toString(), target);
     for (Integer index : indexes) {
       Range range = Range.create(index, index + target.length());
       rangeList.add(range);
@@ -84,7 +82,7 @@ public class SimpleText extends SpannableString {
   public SimpleText allStartWith(String... prefixs) {
     rangeList.clear();
     for (String prefix : prefixs) {
-      List<Range> ranges = StringUtils.ranges(toString(), prefix + "\\w+");
+      List<Range> ranges = Utils.ranges(toString(), prefix + "\\w+");
       for (Range range : ranges) {
         rangeList.add(range);
       }
@@ -202,9 +200,19 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
-  public SimpleText url(String url) {
+  public SimpleText url(final String url) {
     for (Range range : rangeList) {
-      setSpan(new NoUnderLineUrlSpan(url), range.from, range.to, SPAN_MODE);
+      CustomClickableSpan span = new CustomClickableSpan(
+        subSequence(range.from, range.to),
+        tagsMap.get(range),
+        range,
+        new com.jaychang.st.OnTextClickListener() {
+          @Override
+          public void onClicked(CharSequence text, Range range, Object tag) {
+            Utils.openURL(context, url);
+          }
+        });
+      setSpan(span, range.from, range.to, SPAN_MODE);
     }
     return this;
   }
@@ -226,11 +234,24 @@ public class SimpleText extends SpannableString {
 
   public SimpleText onClick(final com.jaychang.st.OnTextClickListener onTextClickListener) {
     for (final Range range : rangeList) {
-      NoUnderLineClickableSpan span = new NoUnderLineClickableSpan(
+      CustomClickableSpan span = new CustomClickableSpan(
         subSequence(range.from, range.to),
         tagsMap.get(range),
         range,
         onTextClickListener);
+      setSpan(span, range.from, range.to, SPAN_MODE);
+    }
+
+    return this;
+  }
+
+  public SimpleText onLongClick(final OnTextLongClickListener onTextLongClickListener) {
+    for (final Range range : rangeList) {
+      CustomClickableSpan span = new CustomClickableSpan(
+        subSequence(range.from, range.to),
+        tagsMap.get(range),
+        range,
+        onTextLongClickListener);
       setSpan(span, range.from, range.to, SPAN_MODE);
     }
 
@@ -256,6 +277,7 @@ public class SimpleText extends SpannableString {
   }
 
   public void linkify(TextView textView) {
+    textView.setHighlightColor(Color.TRANSPARENT);
     textView.setMovementMethod(new LinkTouchMovementMethod(pressedTextColor, pressedBackgroundColor, pressedBackgroundRadius));
   }
 

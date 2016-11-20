@@ -6,6 +6,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jaychang.st.OnTextClickListener;
+import com.jaychang.st.OnTextLongClickListener;
 import com.jaychang.st.Range;
 import com.jaychang.st.SimpleText;
 
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textView = (TextView) findViewById(R.id.textView);
 
     String text = "This is a simple #foo @bar text \n SimpleText";
-    String url = "https://github.com/jaychang0917/SimpleText";
+    final String url = "https://github.com/jaychang0917/SimpleText";
 
     User foo = new User("1001", "foo");
     User bar = new User("1002", "bar");
@@ -38,7 +39,13 @@ public class MainActivity extends AppCompatActivity {
         }
       })
       .first("simple").textColor(R.color.colorAccent)
-      .first("SimpleText").bold().textColor(R.color.link).url(url);
+      .first("SimpleText").bold().textColor(R.color.link).url(url)
+      .onLongClick(new OnTextLongClickListener() {
+        @Override
+        public void onLongClicked(CharSequence text, Range range, Object tag) {
+          Toast.makeText(MainActivity.this, "[long click] to share " + url, Toast.LENGTH_SHORT).show();
+        }
+      });
 
     simpleText.linkify(textView);
 

@@ -1,57 +1,76 @@
 package com.jaychang.st;
 
 import android.graphics.Color;
+import android.os.Handler;
+import android.provider.Settings;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-public class LinkTouchMovementMethod extends LinkMovementMethod {
+class LinkTouchMovementMethod extends LinkMovementMethod {
 
-  private ClickableSpan touchableSpan;
+  private static final int LONG_CLICK_THRESHOLD = 1000;
+  private boolean isLongClicked;
+  private Handler longClickHandler;
+  private CustomClickableSpan customClickSpan;
   private RoundedBackgroundSpan backgroundSpan;
 
-  public LinkTouchMovementMethod(int pressedTextColor,
-                                 int pressedBackgroundColor,
-                                 int backgroundRadius) {
+  LinkTouchMovementMethod(int pressedTextColor,
+                          int pressedBackgroundColor,
+                          int backgroundRadius) {
     backgroundSpan = new RoundedBackgroundSpan(pressedTextColor, pressedBackgroundColor, backgroundRadius);
+    longClickHandler = new Handler();
   }
 
   @Override
-  public boolean onTouchEvent(TextView textView, Spannable spannable, MotionEvent event) {
-    textView.setHighlightColor(Color.TRANSPARENT);
+  public boolean onTouchEvent(final TextView textView, final Spannable spannable, MotionEvent event) {
+    int action = event.getAction();
 
-    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-      touchableSpan = getPressedSpan(textView, spannable, event);
-      if (touchableSpan != null) {
-        Selection.setSelection(spannable, spannable.getSpanStart(touchableSpan), spannable.getSpanEnd(touchableSpan));
+    if (action == MotionEvent.ACTION_CANCEL && longClickHandler != null) {
+      longClickHandler.removeCallbacksAndMessages(null);
+    }
+
+    if (action == MotionEvent.ACTION_DOWN) {
+      customClickSpan = getPressedSpan(textView, spannable, event);
+
+      longClickHandler.postDelayed(new Runnable() {
+        @Override
+        public void run() {
+          if (customClickSpan != null) {
+            customClickSpan.onLongClick(textView);
+            isLongClicked = true;
+            removeBackground(spannable);
+          }
+        }
+      }, LONG_CLICK_THRESHOLD);
+
+      if (customClickSpan != null) {
         setBackground(spannable);
       }
-    } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-      ClickableSpan touchedSpan = getPressedSpan(textView, spannable, event);
-      if (touchableSpan != null && touchedSpan != touchableSpan) {
-        removeBackground(spannable);
-        touchableSpan = null;
-        Selection.removeSelection(spannable);
-      }
     } else {
-      if (touchableSpan != null) {
-        super.onTouchEvent(textView, spannable, event);
+      isLongClicked = false;
+
+      if (longClickHandler != null) {
+        longClickHandler.removeCallbacksAndMessages(null);
       }
-      removeBackground(spannable);
-      touchableSpan = null;
-      Selection.removeSelection(spannable);
+
+      if (!isLongClicked && customClickSpan != null) {
+        customClickSpan.onClick(textView);
+      }
+
+      if (customClickSpan != null) {
+        removeBackground(spannable);
+      }
     }
+
     return true;
   }
 
-  private ClickableSpan getPressedSpan(TextView textView, Spannable spannable, MotionEvent event) {
-
+  private CustomClickableSpan getPressedSpan(TextView textView, Spannable spannable, MotionEvent event) {
     int x = (int) event.getX();
     int y = (int) event.getY();
 
@@ -65,20 +84,29 @@ public class LinkTouchMovementMethod extends LinkMovementMethod {
     int line = layout.getLineForVertical(y);
     int off = layout.getOffsetForHorizontal(line, x);
 
-    ClickableSpan[] link = spannable.getSpans(off, off, ClickableSpan.class);
-    ClickableSpan touchedSpan = null;
-    if (link.length > 0) {
+    CustomClickableSpan[] link = spannable.getSpans(off, off, CustomClickableSpan.class);
+    CustomClickableSpan touchedSpan = null;
+    if (link.length == 2) {
+      touchedSpan = link[0];
+      CustomClickableSpan tempSpan = link[1];
+      touchedSpan.setOnTextClickListener(touchedSpan.getOnTextClickListener() != null ? touchedSpan.getOnTextClickListener() : tempSpan.getOnTextClickListener());
+      touchedSpan.setOnTextLongClickListener(touchedSpan.getOnTextLongClickListener() != null ? touchedSpan.getOnTextLongClickListener() : tempSpan.getOnTextLongClickListener());
+    } else if (link.length == 1){
       touchedSpan = link[0];
     }
+
     return touchedSpan;
   }
 
-  public void setBackground(Spannable spannable) {
-    spannable.setSpan(backgroundSpan, spannable.getSpanStart(touchableSpan), spannable.getSpanEnd(touchableSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+  private void setBackground(Spannable spannable) {
+    spannable.setSpan(backgroundSpan, spannable.getSpanStart(customClickSpan), spannable.getSpanEnd(customClickSpan), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    Selection.setSelection(spannable, spannable.getSpanStart(customClickSpan), spannable.getSpanEnd(customClickSpan));
   }
 
-  public void removeBackground(Spannable spannable) {
+  private void removeBackground(Spannable spannable) {
     spannable.removeSpan(backgroundSpan);
+    Selection.removeSelection(spannable);
+    customClickSpan = null;
   }
 
 }
