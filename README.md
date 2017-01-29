@@ -43,7 +43,7 @@ dependencies {
 ##Usage
 ####Step 1: Match your target text(s)
 | Method                       | Description                                     |
-| -------------                |:-----------------------------------------------:|
+| -------------                | ----------------------------------------------- |
 | `first(text)`                | match first occurrence                          |
 | `last(text)`                 | match last occurrence                           |
 | `all(text)`                  | match all occurrences                           |
