@@ -20,7 +20,7 @@ This libary aims to simplify the creation of spannable string.
 
 ![](https://github.com/jaychang0917/SimpleText/blob/master/SimpleText_v1_2_0.gif)
 
-##Setup
+##Installation
 In your project level build.gradle :
 
 ```java
