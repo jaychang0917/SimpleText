@@ -1,9 +1,7 @@
 package com.jaychang.st;
 
-import android.annotation.SuppressLint;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
-import android.text.style.URLSpan;
 import android.view.View;
 
 class CustomClickableSpan extends ClickableSpan {

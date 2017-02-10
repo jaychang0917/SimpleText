@@ -1,8 +1,6 @@
 package com.jaychang.st;
 
-import android.graphics.Color;
 import android.os.Handler;
-import android.provider.Settings;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;

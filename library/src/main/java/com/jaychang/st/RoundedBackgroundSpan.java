@@ -8,9 +8,6 @@ import android.support.annotation.NonNull;
 import android.text.TextPaint;
 import android.text.style.ReplacementSpan;
 
-import static android.R.attr.padding;
-import static android.R.attr.width;
-
 class RoundedBackgroundSpan extends ReplacementSpan {
 
   private int radius = 0;
