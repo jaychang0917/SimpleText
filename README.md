@@ -4,7 +4,7 @@
 
 This libary aims to simplify the creation of spannable string.
 
-##Features
+## Features
 - [x] long click event (added in v1.2.0) 🆕
 - [x] bind a tag with the clicked text (added in v1.1.1) 🆕
 - [x] text background (with round corner)
@@ -20,7 +20,7 @@ This libary aims to simplify the creation of spannable string.
 
 ![](https://github.com/jaychang0917/SimpleText/blob/master/SimpleText_v1_2_0.gif)
 
-##Installation
+## Installation
 In your project level build.gradle :
 
 ```java
@@ -40,8 +40,8 @@ dependencies {
 }
 ```
 
-##Usage
-####Step 1: Match your target text(s)
+## Usage
+#### Step 1: Match your target text(s)
 | Method                       | Description                                     |
 | -------------                | ----------------------------------------------- |
 | `first(text)`                | match first occurrence                          |
@@ -53,9 +53,9 @@ dependencies {
 | `ranges(ranges)`             | match all texts at specified positions          |
 | `between(startText:endText)` | match text between two texts                    |
 
-####Step 2: Apply style(s)
+#### Step 2: Apply style(s)
 
-##Example
+## Example
 ```java
 TextView textView = (TextView) findViewById(R.id.textView);
 
@@ -91,10 +91,10 @@ simpleText.linkify(textView); // enable click event
 textView.setText(simpleText);
 ```
 
-##Change Log
+## Change Log
 [Change Log](https://github.com/jaychang0917/SimpleText/blob/master/CHANGLOG.md)
 
-##License
+## License
 ```
 Copyright 2016 Jay Chang
 
