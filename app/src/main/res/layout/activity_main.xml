@@ -7,15 +7,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        tools:text="\#foo"
-        android:layout_gravity="center"
-        android:textColor="#000"
-        android:gravity="center"
-        android:textSize="18sp" />
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="400dp"
+        android:layout_height="400dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            tools:text="\#foo"
+            android:layout_gravity="center"
+            android:textColor="#000"
+            android:gravity="center"
+            android:textSize="18sp" />
+
+    </FrameLayout>
+
 
 </FrameLayout>

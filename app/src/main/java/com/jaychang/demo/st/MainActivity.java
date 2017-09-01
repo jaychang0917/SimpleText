@@ -2,6 +2,7 @@ package com.jaychang.demo.st;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
       .textColor(R.color.link)
       .pressedTextColor(R.color.pressedText)
       .pressedBackground(R.color.pressedBg, 2)
-      .onClick(new OnTextClickListener() {
+      .onClick(textView, new OnTextClickListener() {
         @Override
         public void onClicked(CharSequence text, Range range, Object tag) {
           Toast.makeText(MainActivity.this, tag.toString(), Toast.LENGTH_SHORT).show();
@@ -40,16 +41,21 @@ public class MainActivity extends AppCompatActivity {
       })
       .first("simple").textColor(R.color.colorAccent)
       .first("SimpleText").bold().textColor(R.color.link).url(url)
-      .onLongClick(new OnTextLongClickListener() {
+      .onLongClick(textView, new OnTextLongClickListener() {
         @Override
         public void onLongClicked(CharSequence text, Range range, Object tag) {
           Toast.makeText(MainActivity.this, "[long click] to share " + tag.toString(), Toast.LENGTH_SHORT).show();
         }
       });
 
-    simpleText.linkify(textView);
-
     textView.setText(simpleText);
+
+    findViewById(R.id.frameLayout).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Toast.makeText(MainActivity.this, "yo", Toast.LENGTH_SHORT).show();
+      }
+    });
   }
 
 }

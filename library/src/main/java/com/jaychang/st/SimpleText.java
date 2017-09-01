@@ -7,10 +7,8 @@ import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.text.SpannableString;
-import android.text.TextPaint;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.BackgroundColorSpan;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StrikethroughSpan;
@@ -19,7 +17,6 @@ import android.text.style.SubscriptSpan;
 import android.text.style.SuperscriptSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.UnderlineSpan;
-import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -232,7 +229,7 @@ public class SimpleText extends SpannableString {
     return pressedBackground(colorRes, 0);
   }
 
-  public SimpleText onClick(final com.jaychang.st.OnTextClickListener onTextClickListener) {
+  public SimpleText onClick(TextView textView, final OnTextClickListener onTextClickListener) {
     for (final Range range : rangeList) {
       CustomClickableSpan span = new CustomClickableSpan(
         subSequence(range.from, range.to),
@@ -241,11 +238,11 @@ public class SimpleText extends SpannableString {
         onTextClickListener);
       setSpan(span, range.from, range.to, SPAN_MODE);
     }
-
+    linkify(textView);
     return this;
   }
 
-  public SimpleText onLongClick(final OnTextLongClickListener onTextLongClickListener) {
+  public SimpleText onLongClick(TextView textView, final OnTextLongClickListener onTextLongClickListener) {
     for (final Range range : rangeList) {
       CustomClickableSpan span = new CustomClickableSpan(
         subSequence(range.from, range.to),
@@ -254,7 +251,7 @@ public class SimpleText extends SpannableString {
         onTextLongClickListener);
       setSpan(span, range.from, range.to, SPAN_MODE);
     }
-
+    linkify(textView);
     return this;
   }
 
@@ -279,39 +276,6 @@ public class SimpleText extends SpannableString {
   public void linkify(TextView textView) {
     textView.setHighlightColor(Color.TRANSPARENT);
     textView.setMovementMethod(new LinkTouchMovementMethod(pressedTextColor, pressedBackgroundColor, pressedBackgroundRadius));
-  }
-
-  @Deprecated
-  public interface OnTextClickListener {
-    void onTextClicked(CharSequence text, Range range);
-  }
-
-  @Deprecated
-  public SimpleText clickable(@ColorRes int pressedTextColor,
-                              @ColorRes int pressedBackgroundColor,
-                              int pressedBackgroundRadius,
-                              final OnTextClickListener onTextClickListener) {
-
-    this.pressedTextColor = ContextCompat.getColor(context, pressedTextColor);
-    this.pressedBackgroundColor = ContextCompat.getColor(context, pressedBackgroundColor);
-    this.pressedBackgroundRadius = Utils.dp2px(context, pressedBackgroundRadius);
-
-    for (final Range range : rangeList) {
-      ClickableSpan span = new ClickableSpan() {
-        @Override
-        public void onClick(View widget) {
-          onTextClickListener.onTextClicked(subSequence(range.from, range.to), range);
-        }
-
-        @Override
-        public void updateDrawState(TextPaint ds) {
-          ds.setUnderlineText(false);
-        }
-      };
-      setSpan(span, range.from, range.to, SPAN_MODE);
-    }
-
-    return this;
   }
 
 }
