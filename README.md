@@ -71,7 +71,7 @@ SimpleText simpleText = SimpleText.create(this, text)
   .textColor(R.color.link)
   .pressedTextColor(R.color.pressedText)
   .pressedBackground(R.color.pressedBg, 2)
-  .onClick(new OnTextClickListener() {
+  .onClick(textView, new OnTextClickListener() {
     @Override
     public void onClicked(CharSequence text, Range range, Object tag) {
       Toast.makeText(MainActivity.this, tag.toString(), Toast.LENGTH_SHORT).show();
@@ -79,14 +79,12 @@ SimpleText simpleText = SimpleText.create(this, text)
   })
   .first("simple").textColor(R.color.colorAccent)
   .first("SimpleText").bold().textColor(R.color.link).url(url)
-  .onLongClick(new OnTextLongClickListener() {
+  .onLongClick(textView, new OnTextLongClickListener() {
     @Override
     public void onLongClicked(CharSequence text, Range range, Object tag) {
       Toast.makeText(MainActivity.this, "[long click] to share " + tag.toString(), Toast.LENGTH_SHORT).show();
     }
   });
-
-simpleText.linkify(textView); // enable click event
 
 textView.setText(simpleText);
 ```
