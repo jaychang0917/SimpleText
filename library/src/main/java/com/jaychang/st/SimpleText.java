@@ -136,6 +136,13 @@ public class SimpleText extends SpannableString {
     }
     return this;
   }
+  
+  public SimpleText normal() {
+    for (Range range : rangeList) {
+      setSpan(new StyleSpan(Typeface.NORMAL), range.from, range.to, SPAN_MODE);
+    }
+    return this;
+  }
 
   public SimpleText font(String font) {
     for (Range range : rangeList) {
