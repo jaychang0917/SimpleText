@@ -36,9 +36,10 @@ In your app level build.gradle :
 
 ```java
 dependencies {
-    compile 'com.github.jaychang0917:SimpleText:1.2.1'
+    compile 'com.github.jaychang0917:SimpleText:{latest_version}'
 }
 ```
+[![Release](https://jitpack.io/v/jaychang0917/SimpleText.svg)](https://jitpack.io/#jaychang0917/SimpleText)
 
 ## Usage
 #### Step 1: Match your target text(s)
