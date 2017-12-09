@@ -177,7 +177,7 @@ public class SimpleText extends SpannableString {
     int color = ContextCompat.getColor(context, colorRes);
     int radiusPx = Utils.dp2px(context, radiusDp);
     for (Range range : rangeList) {
-      setSpan(new RoundedBackgroundSpan(color, textColor, radiusPx), range.from, range.to, SPAN_MODE);
+      setSpan(new RoundedBackgroundSpan(textColor, color, radiusPx), range.from, range.to, SPAN_MODE);
     }
     return this;
   }
