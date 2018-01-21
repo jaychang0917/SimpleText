@@ -22,6 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class SimpleText extends SpannableString {
 
@@ -79,10 +80,8 @@ public class SimpleText extends SpannableString {
   public SimpleText allStartWith(String... prefixs) {
     rangeList.clear();
     for (String prefix : prefixs) {
-      List<Range> ranges = Utils.ranges(toString(), prefix + "\\w+");
-      for (Range range : ranges) {
-        rangeList.add(range);
-      }
+      List<Range> ranges = Utils.ranges(toString(), Pattern.quote(prefix) + "\\w+");
+      rangeList.addAll(ranges);
     }
     return this;
   }
