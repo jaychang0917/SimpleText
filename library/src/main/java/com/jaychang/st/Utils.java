@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 class Utils {
 
   static int dp2px(Context context, int dp) {
@@ -19,6 +21,7 @@ class Utils {
   static void openURL(Context context, String url) {
     Uri uri = Uri.parse(url);
     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
     context.startActivity(intent);
   }
 

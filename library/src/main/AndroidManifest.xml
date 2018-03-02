@@ -1,2 +1,12 @@
-<manifest package="com.jaychang.st" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.jaychang.st">
+
+    <application>
+        <provider
+            android:authorities="${applicationId}.simpletextprovider"
+            android:name=".ContextProvider"
+            android:exported="false"
+            android:enabled="true"/>
+    </application>
+
+</manifest>
 

@@ -40,8 +40,8 @@ public class SimpleText extends SpannableString {
     this.context = context;
   }
 
-  public static SimpleText create(Context context, CharSequence text) {
-    return new SimpleText(context, text);
+  public static SimpleText from(CharSequence text) {
+    return new SimpleText(ContextProvider.context, text);
   }
 
   public SimpleText first(String target) {
