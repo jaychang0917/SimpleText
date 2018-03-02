@@ -24,7 +24,7 @@ class RoundedBackgroundSpan extends ReplacementSpan {
   }
 
   RoundedBackgroundSpan(@ColorInt int backgroundColor,
-                               int radius) {
+                        int radius) {
     super();
     this.backgroundColor = backgroundColor;
     this.radius = radius;

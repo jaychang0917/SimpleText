@@ -279,7 +279,7 @@ public class SimpleText extends SpannableString {
     return this;
   }
 
-  public void linkify(TextView textView) {
+  private void linkify(TextView textView) {
     textView.setHighlightColor(Color.TRANSPARENT);
     textView.setMovementMethod(new LinkTouchMovementMethod(pressedTextColor, pressedBackgroundColor, pressedBackgroundRadius));
   }
