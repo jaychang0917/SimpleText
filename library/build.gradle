@@ -1,17 +1,23 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.novoda.bintray-release'
 
-group='com.github.jaychang0917'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath deps.build.gradlePlugins.bintray
+    }
+}
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
-
+    compileSdkVersion deps.build.compileSdkVersion
+    buildToolsVersion deps.build.buildToolsVersion
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 25
+        minSdkVersion deps.build.minSdkVersion
+        targetSdkVersion deps.build.targetSdkVersion
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0"
     }
     buildTypes {
         release {
@@ -22,6 +28,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.1.1'
+    api deps.support.appcompat
+}
+
+publish {
+    userOrg = 'jaychang0917'
+    groupId = 'com.jaychang'
+    artifactId = 'simpletext'
+    publishVersion = '2.0.0'
+    desc = 'A simple spannable string helper'
+    website = 'https://github.com/jaychang0917/SimpleText'
 }

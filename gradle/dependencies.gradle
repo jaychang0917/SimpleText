@@ -1,0 +1,26 @@
+def versions = [
+    support: '27.1.0',
+]
+
+def build = [
+    buildToolsVersion: '27.0.3',
+    compileSdkVersion: 27,
+    minSdkVersion: 14,
+    targetSdkVersion: 27,
+
+    gradlePlugins: [
+        android: 'com.android.tools.build:gradle:3.0.1',
+        github: 'com.github.dcendents:android-maven-gradle-plugin:1.5',
+        bintray: 'com.novoda:bintray-release:0.8.0'
+    ]
+]
+
+def support = [
+    appcompat: "com.android.support:appcompat-v7:${versions.support}"
+]
+
+ext.deps = [
+    "build": build,
+    "support": support,
+    "versions": versions
+]
