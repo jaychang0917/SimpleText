@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     User foo = new User("1001", "foo");
     User bar = new User("1002", "bar");
 
-    SimpleText simpleText = SimpleText.create(this, text)
+    SimpleText simpleText = SimpleText.from(text)
       .allStartWith("#", "@")
       .tags(foo, bar)
       .textColor(R.color.link)
@@ -39,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
           Toast.makeText(MainActivity.this, tag.toString(), Toast.LENGTH_SHORT).show();
         }
       })
+
       .first("simple").textColor(R.color.colorAccent)
+      
       .first("SimpleText").bold().textColor(R.color.link).url(url)
       .onLongClick(textView, new OnTextLongClickListener() {
         @Override
@@ -53,7 +55,14 @@ public class MainActivity extends AppCompatActivity {
     findViewById(R.id.frameLayout).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Toast.makeText(MainActivity.this, "yo", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "framelayout", Toast.LENGTH_SHORT).show();
+      }
+    });
+
+    findViewById(R.id.textView).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Toast.makeText(MainActivity.this, "textview", Toast.LENGTH_SHORT).show();
       }
     });
   }

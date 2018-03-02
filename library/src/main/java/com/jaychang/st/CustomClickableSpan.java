@@ -28,7 +28,6 @@ class CustomClickableSpan extends ClickableSpan {
     this.onTextLongClickListener = onTextLongClickListener;
   }
 
-
   OnTextClickListener getOnTextClickListener() {
     return onTextClickListener;
   }
@@ -48,7 +47,12 @@ class CustomClickableSpan extends ClickableSpan {
   @Override
   public void onClick(View view) {
     if (onTextClickListener != null) {
-      onTextClickListener.onClicked(text, range, tag);
+      handleClickEvent(view, new Runnable() {
+        @Override
+        public void run() {
+          onTextClickListener.onClicked(text, range, tag);
+        }
+      });
     }
   }
 
@@ -58,8 +62,19 @@ class CustomClickableSpan extends ClickableSpan {
 
   void onLongClick(View view) {
     if (onTextLongClickListener != null) {
-      onTextLongClickListener.onLongClicked(text, range, tag);
+      handleClickEvent(view, new Runnable() {
+        @Override
+        public void run() {
+          onTextLongClickListener.onLongClicked(text, range, tag);
+        }
+      });
     }
   }
 
+  private void handleClickEvent(View view, Runnable runnable) {
+    // prevent calling view's onClick listener after
+    view.setEnabled(false);
+    runnable.run();
+    view.setEnabled(true);
+  }
 }
