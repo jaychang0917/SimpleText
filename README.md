@@ -1,14 +1,14 @@
 # SimpleText
-
-[![Release](https://jitpack.io/v/jaychang0917/SimpleText.svg)](https://jitpack.io/#jaychang0917/SimpleText)
+[![Download](https://api.bintray.com/packages/jaychang0917/maven/simpletext/images/download.svg) ](https://bintray.com/jaychang0917/maven/simpletext/_latestVersion)
 
 This libary aims to simplify the creation of spannable string.
 
 ## Features
-- [x] long click event (added in v1.2.0) 🆕
-- [x] bind a tag with the clicked text (added in v1.1.1) 🆕
-- [x] text background (with round corner)
+- [x] long click event
+- [x] bind an object with the clicked text
 - [x] click event (with pressed color state)
+- [x] text background (with round corner)
+- [x] text color
 - [x] text size
 - [x] text style (bold, italic)
 - [x] url
@@ -21,25 +21,14 @@ This libary aims to simplify the creation of spannable string.
 ![](https://github.com/jaychang0917/SimpleText/blob/master/SimpleText_v1_2_0.gif)
 
 ## Installation
-In your project level build.gradle :
-
-```java
-allprojects {
-    repositories {
-        ...
-        maven { url "https://jitpack.io" }
-    }
-}
-```
-
 In your app level build.gradle :
 
 ```java
 dependencies {
-    compile 'com.github.jaychang0917:SimpleText:{latest_version}'
+    compile 'com.jaychang:simpletext:2.0.0'
 }
 ```
-[![Release](https://jitpack.io/v/jaychang0917/SimpleText.svg)](https://jitpack.io/#jaychang0917/SimpleText)
+[![Download](https://api.bintray.com/packages/jaychang0917/maven/simpletext/images/download.svg) ](https://bintray.com/jaychang0917/maven/simpletext/_latestVersion)
 
 ## Usage
 #### Step 1: Match your target text(s)
@@ -66,7 +55,7 @@ String url = "https://github.com/jaychang0917/SimpleText";
 User foo = new User("1001", "foo");
 User bar = new User("1002", "bar");
 
-SimpleText simpleText = SimpleText.create(this, text)
+SimpleText simpleText = SimpleText.from(text)
   .allStartWith("#", "@")
   .tags(foo, bar)
   .textColor(R.color.link)
@@ -78,8 +67,14 @@ SimpleText simpleText = SimpleText.create(this, text)
       Toast.makeText(MainActivity.this, tag.toString(), Toast.LENGTH_SHORT).show();
     }
   })
-  .first("simple").textColor(R.color.colorAccent)
-  .first("SimpleText").bold().textColor(R.color.link).url(url)
+  
+  .first("simple")
+  .textColor(R.color.colorAccent)
+  
+  .first("SimpleText")
+  .bold()
+  .textColor(R.color.link)
+  .url(url)
   .onLongClick(textView, new OnTextLongClickListener() {
     @Override
     public void onLongClicked(CharSequence text, Range range, Object tag) {
