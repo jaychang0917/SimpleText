@@ -60,7 +60,7 @@ SimpleText simpleText = SimpleText.from(text)
   .tags(foo, bar)
   .textColor(R.color.link)
   .pressedTextColor(R.color.pressedText)
-  .pressedBackground(R.color.pressedBg, 2)
+  .pressedBackground(R.color.pressedBg, 2) // 2 is corner radius in dp
   .onClick(textView, new OnTextClickListener() {
     @Override
     public void onClicked(CharSequence text, Range range, Object tag) {
