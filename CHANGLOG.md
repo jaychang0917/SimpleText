@@ -1,5 +1,9 @@
 ## Change Log
 
+### Version 2.0.0 (2018-03-03)
+- Publish to bintray
+- Bug fix
+
 ### Version 1.3.2 (2018-01-21)
 - Bug fix
 
