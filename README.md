@@ -25,7 +25,7 @@ In your app level build.gradle :
 
 ```java
 dependencies {
-    compile 'com.jaychang:simpletext:2.0.0'
+    compile 'com.jaychang:simpletext:2.0.1'
 }
 ```
 [![Download](https://api.bintray.com/packages/jaychang0917/maven/simpletext/images/download.svg) ](https://bintray.com/jaychang0917/maven/simpletext/_latestVersion)
