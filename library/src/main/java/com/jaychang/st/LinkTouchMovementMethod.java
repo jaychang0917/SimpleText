@@ -56,7 +56,7 @@ class LinkTouchMovementMethod extends LinkMovementMethod {
         longClickHandler.removeCallbacksAndMessages(null);
       }
 
-      if (!isLongClicked && customClickSpan != null) {
+      if (!isLongClicked && customClickSpan != null && action == MotionEvent.ACTION_UP) {
         customClickSpan.onClick(textView);
       }
 
