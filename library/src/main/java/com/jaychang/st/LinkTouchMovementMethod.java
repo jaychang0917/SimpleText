@@ -49,7 +49,7 @@ class LinkTouchMovementMethod extends LinkMovementMethod {
       if (customClickSpan != null) {
         setBackground(spannable);
       }
-    } else {
+    } else if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL){
       isLongClicked = false;
 
       if (longClickHandler != null) {
